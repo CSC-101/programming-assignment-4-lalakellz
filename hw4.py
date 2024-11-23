@@ -39,7 +39,7 @@ def main():
 
 
 def process_operation(operation):
-    """Process a single operation on the county data."""
+    #Process a single operation on the county data
     global current_data
 
     if operation == "display":
@@ -66,7 +66,7 @@ def process_operation(operation):
 
 
 def parse_filter(operation, filter_type):
-    """Parse a filter operation into its components."""
+    #Parse a filter operation into its components.
     parts = operation.split(":")
     if len(parts) != 3:
         raise ValueError(f"Malformed {filter_type} operation.")
@@ -74,20 +74,20 @@ def parse_filter(operation, filter_type):
 
 
 def display_counties(data):
-    """Display the counties in a user-friendly format."""
+    #Display the counties in a user-friendly format.
     for county in data:
         print(f"{county.county}, {county.state} | Population: {county.population['2014 Total Population']}")
 
 
 def filter_state(data, state):
-    """Filter counties by state abbreviation."""
+    #Filter counties by state abbreviation
     filtered = [county for county in data if county.state == state]
     print(f"Filter: state == {state} ({len(filtered)} entries)")
     return filtered
 
 
 def filter_gt(data, field, value):
-    """Filter counties where a field is greater than a value."""
+    #Filter counties where a field is greater than a value.
     key = field.split(".")
     filtered = [
         county for county in data
@@ -98,7 +98,7 @@ def filter_gt(data, field, value):
 
 
 def filter_lt(data, field, value):
-    """Filter counties where a field is less than a value."""
+    #Filter counties where a field is less than a value.
     key = field.split(".")
     filtered = [
         county for county in data
@@ -109,13 +109,13 @@ def filter_lt(data, field, value):
 
 
 def print_population_total(data):
-    """Print the total population of the current counties."""
+    #Print the total population of the current counties
     total_population = sum(county.population['2014 Total Population'] for county in data)
     print(f"2014 population: {total_population}")
 
 
 def print_population_subtotal(data, field):
-    """Print the total population for a sub-population based on a field percentage."""
+    #Print the total population for a sub-population based on a field percentage
     key = field.split(".")
     subtotal = sum(
         county.population['2014 Total Population'] * (resolve_field(county, key) / 100)
@@ -125,7 +125,7 @@ def print_population_subtotal(data, field):
 
 
 def print_population_percentage(data, field):
-    """Print the percentage of the total population within the specified sub-population."""
+    #print the percentage of the total population within the specified sub-population
     total_population = sum(county.population['2014 Total Population'] for county in data)
     key = field.split(".")
     sub_population = sum(
@@ -137,7 +137,7 @@ def print_population_percentage(data, field):
 
 
 def resolve_field(county, key):
-    """Resolve a hierarchical field name into its value."""
+    #resolve a hierarchical field name into its value
     data = county
     for k in key:
         data = getattr(data, k.lower(), {}).get(k, None) if isinstance(data, dict) else getattr(data, k.lower(), None)
